@@ -1,8 +1,8 @@
 // src/pages/store/selectors.ts
+// Redux 选择器文件
 
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { Product } from '../../types';
   
 
 // 基础选择器
@@ -98,10 +98,10 @@ export const selectFilteredAndSortedProducts = createSelector(
           return sort.order === 'asc' ? a.rating - b.rating : b.rating - a.rating;
         case 'sales':
           return sort.order === 'asc' ? a.sales - b.sales : b.sales - a.sales;
-        case 'discount':
-          const discountA = a.discount || a.discountPercentage || 0;
-          const discountB = b.discount || b.discountPercentage || 0;
-          return sort.order === 'asc' ? discountA - discountB : discountB - discountA;
+        case 'discountPercentage':
+          const discountPercentageA = a.discountPercentage  || 0;
+          const discountPercentageB = b.discountPercentage  || 0;
+          return sort.order === 'asc' ? discountPercentageA - discountPercentageB : discountPercentageB - discountPercentageA;
         case 'title':
           return sort.order === 'asc'
             ? a.title.localeCompare(b.title)
@@ -149,15 +149,15 @@ export const selectCartTotal = createSelector(
   [selectCartItems],
   (cartItems) => {
     return cartItems.reduce((total, item) => {
-      const itemDiscount = item.discount || item.discountPercentage || 0;
-      const discountedPrice = itemDiscount > 0
-        ? item.price * (1 - itemDiscount / 100)
+      const itemdiscountPercentage = item.discountPercentage || item.discountPercentage || 0;
+      const discountPercentageedPrice = itemdiscountPercentage > 0
+        ? item.price * (1 - itemdiscountPercentage / 100)
         : item.price;
-      return total + discountedPrice * item.quantity;
+      return total + discountPercentageedPrice * item.quantity;
     }, 0);
   }
 );
-
+  
 export const selectCartHasItems = createSelector(
   [selectCartItems],
   (cartItems) => cartItems.length > 0

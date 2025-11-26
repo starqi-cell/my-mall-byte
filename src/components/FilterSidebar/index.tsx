@@ -21,27 +21,30 @@ const FilterSidebar: FC<IProps> = memo(() => {
   }
 
   return (
-    <Card style={{ height: '100%' }}>
+    <Card style={{ height: '100%', minHeight: '500px', display: 'flex', flexDirection: 'column' }}>
       <SidebarContainer>
 
         {/* 分类筛选 */}
         <Section>
           <Title level={5}>商品分类</Title>
-
-          {categories.length === 0 ? (
-            <Spin />
-          ) : (
-            <Radio.Group
-              onChange={(e) => dispatch(setFilter({ category: e.target.value }))}
-              value={filters.category}
-            >
-              {categories.map((cat) => (
-                <Radio key={cat.slug} value={cat.slug}>
-                  {cat.name}
-                </Radio>
-              ))}
-            </Radio.Group>
-          )}
+          
+          <div style={{ minHeight: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {categories.length === 0 ? (
+              <Spin />
+            ) : (
+              <Radio.Group
+                onChange={(e) => dispatch(setFilter({ category: e.target.value }))}
+                value={filters.category === '全部' ? 'all' : filters.category}
+                style={{ width: '100%' }}
+              >
+                {categories.map((cat) => (
+                  <Radio key={cat.slug} value={cat.slug}>
+                    {cat.name}
+                  </Radio>
+                ))}
+              </Radio.Group>
+            )}
+          </div>
         </Section>
 
         {/* 价格筛选 */}

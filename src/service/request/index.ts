@@ -1,4 +1,6 @@
 // src/api/client.ts
+// API 请求客户端封装文件
+
 import axios from 'axios';
 import type { AxiosInstance } from 'axios'
 import type { AppRequestConfig } from './type'
@@ -22,7 +24,6 @@ class AppRequest {
         return res.data
       },
       (err) => {
-        // 正确地拒绝Promise，确保上层能获取完整的错误信息
         return Promise.reject(err)
       }
     )

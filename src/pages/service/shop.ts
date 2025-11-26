@@ -1,3 +1,7 @@
+// src/pages/service/shop.ts
+// 商品相关的请求函数
+
+
 import appRequest from "../../service/index";
 
 export const getProductList = async (categorySlug: string = 'all') => {
@@ -13,6 +17,7 @@ export const getProductList = async (categorySlug: string = 'all') => {
       limit:0
     }
    });
+   console.log("获取了一次数据");
   return response;
 };
 

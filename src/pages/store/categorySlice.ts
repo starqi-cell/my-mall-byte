@@ -1,4 +1,6 @@
 // src/pages/store/categorySlice.ts
+// Redux 切片文件 - 商品分类
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Category } from '../../types';
 import { getCategoryList } from '../service/shop';
@@ -32,7 +34,7 @@ const initialState: CategoryState = {
 const categorySlice = createSlice({
   name: 'categories',
   initialState,
-  reducers: {}, // 通常分类没有什么同步操作
+  reducers: {}, 
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategory.pending, (state) => { state.loading = true; })

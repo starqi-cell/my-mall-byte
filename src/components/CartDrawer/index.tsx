@@ -1,10 +1,12 @@
-// src/components/CartDrawer.tsx
+// src/components/CartDrawer/index.tsx
 import React from 'react';
 import { Drawer, Button, List, Typography, Empty, Avatar } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { removeFromCart } from '../../pages/store/cartSlice';
 import { CartItem } from '../../types';
+
+import { FooterWrapper, TotalRow, PriceText } from "./style"; 
 
 const { Text } = Typography;
 
@@ -16,14 +18,15 @@ interface CartDrawerProps {
 const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
   const dispatch = useAppDispatch();
   const cart = useAppSelector(state => state.cart.cart);
-  
+
   const handleRemove = (item: CartItem) => {
-    dispatch(removeFromCart({ 
-      id: item.id, 
-      color: item.selectedColor, 
-      size: item.selectedSize 
+    dispatch(removeFromCart({
+      id: item.id,
+      color: item.selectedColor,
+      size: item.selectedSize
     }));
   };
+
   const total = cart.reduce((t, i) => t + i.price * i.quantity, 0);
 
   return (
@@ -34,27 +37,32 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
       open={isOpen}
       footer={
         cart.length > 0 && (
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, fontWeight: 'bold' }}>
+          <FooterWrapper>
+            <TotalRow>
               <span>合计:</span>
-              <span style={{ color: '#ff4d4f' }}>${total}</span>
-            </div>
-            <Button type="primary" block size="large">去结算</Button>
-          </div>
+              <PriceText>${total}</PriceText>
+            </TotalRow>
+
+            <Button type="primary" block size="large">
+              去结算
+            </Button>
+          </FooterWrapper>
         )
       }
     >
-      {cart.length === 0 ? <Empty description="购物车空空如也" /> : (
+      {cart.length === 0 ? (
+        <Empty description="购物车空空如也" />
+      ) : (
         <List
           itemLayout="horizontal"
           dataSource={cart}
           renderItem={(item) => (
             <List.Item
               actions={[
-                <Button 
-                  type="text" 
-                  danger 
-                  icon={<DeleteOutlined />} 
+                <Button
+                  type="text"
+                  danger
+                  icon={<DeleteOutlined />}
                   onClick={() => handleRemove(item)}
                 />
               ]}
@@ -65,7 +73,9 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
                 description={
                   <div>
                     <Text type="secondary">{item.selectedColor} / {item.selectedSize}</Text>
-                    <div><Text type="danger">${item.price}</Text> x {item.quantity}</div>
+                    <div>
+                      <Text type="danger">${item.price}</Text> x {item.quantity}
+                    </div>
                   </div>
                 }
               />

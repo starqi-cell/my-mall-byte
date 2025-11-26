@@ -1,4 +1,5 @@
 // src/pages/store/cartSlice.ts
+// Redux 切片文件 - 购物车
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartItem } from '../../types';

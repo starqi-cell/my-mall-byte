@@ -1,4 +1,5 @@
 // src/types/index.ts
+// 类型定义文件
 
 // 1. DummyJSON 原始单品结构
 export interface DummyJsonProduct {
@@ -14,7 +15,7 @@ export interface DummyJsonProduct {
   images: string[];              // 详情轮播图
 
 
-  //价格库存 Price / Stock
+  //价格库存 
   price: number;                 // 售价
   discountPercentage: number;    // 折扣百分比
   stock: number;                 // 库存
@@ -31,7 +32,7 @@ export interface DummyJsonProduct {
   };
 
 
-  //评价 Reviews
+  //评价 
   rating: number;                // 商品评分
   reviews?: Array<{
     rating: number;              // 用户评分
@@ -42,42 +43,40 @@ export interface DummyJsonProduct {
   }>;
 
 
-  //售后/交易信息 Service
+  //售后/交易信息
   returnPolicy?: string;         // 退货政策
   warrantyInformation?: string;  // 保修说明
   shippingInformation?: string;  // 物流说明
-  availabilityStatus?: string;   // 商品状态：In Stock / Out of Stock
+  availabilityStatus?: string;   // 商品状态
 
-
-  //元数据 Meta
+  //元数据 
   meta?: {
-    createdAt: string;           // 创建时间
-    updatedAt: string;           // 更新时间
-    barcode: string;             // 条码
-    qrCode: string;              // 二维码
+    createdAt: string;             // 创建时间
+    updatedAt: string;             // 更新时间
+    barcode: string;               // 条码
+    qrCode: string;                // 二维码
   };
 }
 // 2. DummyJSON 列表响应结构
 export interface DummyJsonResponse {
-  products: DummyJsonProduct[];   // 商品列表
-  total: number;                  // 商品总数
-  skip: number;                   // 跳过数量
-  limit: number;                  // 限制数量
+  products: DummyJsonProduct[];     // 商品列表
+  total: number;                    // 商品总数
+  skip: number;                     // 跳过数量
+  limit: number;                    // 限制数量
 }
 
 // 3. 应用内部使用的商品结构
 
 // 商品规格，前端模拟
 export interface ProductSpec {
-  colors: string[];               // 可选颜色
-  sizes: string[];                // 可选尺寸
+  colors: string[];                 // 可选颜色
+  sizes: string[];                  // 可选尺寸
 }
 
 // 商品模型
 export interface Product extends DummyJsonProduct {
     // 适配字段
-  discount?: number;                // 折扣百分比（与discountPercentage相同）
-  image: string;                    // 商品图片（与thumbnail相同）
+  image: string;                    // 商品图片
     
     // 前端模拟字段
   sales: number;                    // 销量，前端模拟  
@@ -100,7 +99,7 @@ export interface FilterState {
 }
 
 export interface SortState {
-  by: 'default' | 'price' | 'sales' | 'discount' | 'title' | 'rating';  // 排序依据
+  by: 'default' | 'price' | 'sales' | 'discountPercentage' | 'title' | 'rating';  // 排序依据
   order: 'asc' | 'desc';              // 排序顺序
 }
 
@@ -123,14 +122,14 @@ export interface ShopState {
 }
 
 export interface Category {
-  slug: string;
-  name: string;
-  url: string;
+  slug: string;                       // 类别标识 
+  name: string;                       // 类别名称 
+  url: string;                        // 类别URL  
 }
 
 export interface FilterState {
-  keyword: string;
-  category: string; 
-  minPrice: string;
-  maxPrice: string;
+  keyword: string;                    // 搜索关键词
+  category: string;                   // 商品类别
+  minPrice: string;                   // 最低价格
+  maxPrice: string;                   // 最高价格
 }

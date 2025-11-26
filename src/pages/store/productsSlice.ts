@@ -1,4 +1,5 @@
 // src/pages/store/productsSlice.ts
+// Redux 切片文件 - 商品列表
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Product, FilterState, SortState } from '../../types';
@@ -20,7 +21,7 @@ export const fetchProducts = createAsyncThunk(
         image: item.thumbnail,
         brand: item.brand || 'Generic',
         sku: item.sku || `SKU-${item.id}`,
-        discount: item.discountPercentage,
+        discountPercentage: item.discountPercentagePercentage,
 
         // 前端模拟字段
         sales: Math.floor(Math.random() * 3000) + 50,
@@ -52,7 +53,7 @@ const initialState: ProductsState = {
   products: [],
   loading: false,
   error: null,
-  filters: { keyword: '', category: '全部', minPrice: '', maxPrice: '' },
+  filters: { keyword: '', category: 'all', minPrice: '', maxPrice: '' },
   sort: { by: 'default', order: 'asc' },
   pagination: { current: 1, pageSize: 8 }
 };

@@ -5,6 +5,9 @@ export const SidebarContainer = styled.div`
   flex-direction: column;
   gap: 20px; 
   width: 100%;
+  min-height: 500px; /* 设置最小高度，确保布局稳定 */
+  height: 100%;
+  flex-grow: 1;
 `;
 
 export const Section = styled.div`
@@ -17,7 +20,8 @@ export const Section = styled.div`
     flex-direction: column;
     gap: 8px;
     
-    max-height: 400px; 
+    max-height: 300px; /* 调整最大高度，避免过高 */
+    min-height: 120px; /* 添加最小高度，确保布局稳定 */
     overflow-y: auto;  
     padding-right: 4px; 
 

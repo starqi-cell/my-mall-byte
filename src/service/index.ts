@@ -1,3 +1,7 @@
+// src/service/index.ts
+// 统一请求出口文件
+
+
 import { BASE_URL, TIME_OUT } from './config'
 import AppRequest from './request'
 
