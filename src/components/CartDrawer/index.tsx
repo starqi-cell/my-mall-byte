@@ -2,8 +2,9 @@
 import React from 'react';
 import { Drawer, Button, List, Typography, Empty, Avatar } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '../store';
-import { removeFromCart } from '../store/shopSlice';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { removeFromCart } from '../../pages/store/cartSlice';
+import { CartItem } from '../../types';
 
 const { Text } = Typography;
 
@@ -14,7 +15,15 @@ interface CartDrawerProps {
 
 const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
   const dispatch = useAppDispatch();
-  const cart = useAppSelector(state => state.shop.cart);
+  const cart = useAppSelector(state => state.cart.cart);
+  
+  const handleRemove = (item: CartItem) => {
+    dispatch(removeFromCart({ 
+      id: item.id, 
+      color: item.selectedColor, 
+      size: item.selectedSize 
+    }));
+  };
   const total = cart.reduce((t, i) => t + i.price * i.quantity, 0);
 
   return (
@@ -23,7 +32,6 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
       placement="right"
       onClose={onClose}
       open={isOpen}
-      width={360}
       footer={
         cart.length > 0 && (
           <div style={{ textAlign: 'right' }}>
@@ -47,11 +55,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
                   type="text" 
                   danger 
                   icon={<DeleteOutlined />} 
-                  onClick={() => dispatch(removeFromCart({ 
-                    id: item.id, 
-                    color: item.selectedColor, 
-                    size: item.selectedSize 
-                  }))} 
+                  onClick={() => handleRemove(item)}
                 />
               ]}
             >

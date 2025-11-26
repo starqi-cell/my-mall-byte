@@ -2,9 +2,10 @@
 import React from 'react';
 import { Card, Typography, Space, Rate, Tag, Button, message } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { useAppDispatch } from '../store';
-import { addToCart, navigateToDetail } from '../store/shopSlice';
-import { Product } from '../types';
+import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../store';
+import { addToCart } from '../../pages/store/cartSlice';
+import { Product } from '../../types';
 
 const { Title, Text } = Typography;
 
@@ -32,17 +33,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
       bodyStyle={{ padding: 16, flex: 1, display: 'flex', flexDirection: 'column' }}
       cover={
-        <div style={{ width: '100%', height: 240, overflow: 'hidden', position: 'relative', background: '#f5f5f5' }}>
-           <img 
-              alt={product.title} 
-              src={product.image} 
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-              onError={(e) => (e.target as HTMLImageElement).src = 'https://placehold.co/400?text=No+Image'} 
-           />
-           {product.sales > 2000 && <Tag color="red" style={{ position: 'absolute', top: 10, left: 10 }}>Hot</Tag>}
-        </div>
+        <Link to={`/product/${product.id}`}>
+          <div style={{ width: '100%', height: 180, overflow: 'hidden', position: 'relative', background: '#f5f5f5' }}>
+             <img 
+                alt={product.title} 
+                src={product.image} 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                onError={(e) => (e.target as HTMLImageElement).src = 'https://placehold.co/400?text=No+Image'} 
+             />
+             {product.sales > 2000 && <Tag color="red" style={{ position: 'absolute', top: 10, left: 10 }}>Hot</Tag>}
+          </div>
+        </Link>
       }
-      onClick={() => dispatch(navigateToDetail(product))}
     >
       <div style={{ flex: 1 }}>
         <Text type="secondary" style={{ fontSize: 12 }}>{product.category}</Text>

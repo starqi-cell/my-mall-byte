@@ -1,39 +1,36 @@
 // src/App.tsx
 import React, { useState, useEffect } from 'react';
-import { Layout } from 'antd';
-import { useAppDispatch, useAppSelector } from './store';
-import { fetchProducts } from './store/shopSlice';
-
+import { Outlet } from 'react-router-dom';
 import Navbar from './components/NavBar';
-import ProductList from './pages/ProductList';
-import ProductDetail from './pages/ProductDetail';
 import CartDrawer from './components/CartDrawer';
+import { StyledLayout, StyledContent, StyledFooter } from './style';
+import { useAppDispatch } from './store';
+import { fetchProducts } from './pages/store/productsSlice';
+import { fetchCategory } from './pages/store/categorySlice';
 
-const { Content, Footer } = Layout;
-    
 const App: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const view = useAppSelector((state: any) => state.shop.view);
   const [isCartOpen, setCartOpen] = useState(false);
-
+  const dispatch = useAppDispatch();
+  
+  // 应用启动时加载商品数据
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts('all'));
+    dispatch(fetchCategory());
   }, [dispatch]);
-
   return (
-    <Layout style={{ minHeight: '100vh', background: '#f5f5f5' }}>
-      <Navbar toggleCart={() => setCartOpen(true)} />
+    <StyledLayout>
+      <Navbar toggleCart={() => setCartOpen(true)}/>
       
-      <Content>
-        {view === 'list' ? <ProductList /> : <ProductDetail />}
-      </Content>
+      <StyledContent>
+        <Outlet />
+      </StyledContent>
       
-      <Footer style={{ textAlign: 'center' }}>
-        ByteMall Demo (Redux + Axios) ©2024
-      </Footer>
+      <StyledFooter>
+        my-mall ©2025
+      </StyledFooter>
       
       <CartDrawer isOpen={isCartOpen} onClose={() => setCartOpen(false)} />
-    </Layout>
+    </StyledLayout>
   );
 };
 

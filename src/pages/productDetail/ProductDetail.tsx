@@ -1,21 +1,32 @@
 // src/pages/ProductDetail.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { 
-  Card, Row, Col, Typography, Tag, Space, Rate, Divider, 
+  Card, Row, Col, Typography, Tag, Space, Divider, 
   Radio, InputNumber, Button, Breadcrumb, message, Image 
 } from 'antd';
 import { ShoppingCartOutlined, HomeOutlined } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '../store';
-import { addToCart, navigateToList } from '../store/shopSlice';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { addToCart } from '../store/cartSlice';
+import { fetchProducts } from '../store/productsSlice';
+import { Product } from '../../types';
 
 const { Title, Text, Paragraph } = Typography;
 
 const ProductDetail: React.FC = () => {
   const dispatch = useAppDispatch();
-  const product = useAppSelector(state => state.shop.currentProduct);
+  const { id } = useParams<{ id: string }>();
+  const product = useAppSelector((state) => 
+    state.products.products.find((p: Product) => p.id === Number(id))
+  );
   
-  if (!product) return null;
+  if (!product) return <div>产品不存在</div>;
   
+  // 组件加载时获取商品数据
+  useEffect(() => {
+    dispatch(fetchProducts('all'));
+  }, [dispatch]);
+
   const [q, setQ] = useState(1);
   const [c, setC] = useState(product.specs.colors[0]);
   const [s, setS] = useState(product.specs.sizes[0]);
@@ -24,7 +35,7 @@ const ProductDetail: React.FC = () => {
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px' }}>
       <Breadcrumb 
         items={[
-          { title: <span onClick={() => dispatch(navigateToList())} style={{ cursor: 'pointer' }}><HomeOutlined /> 首页</span> }, 
+          { title: <Link to="/"><HomeOutlined /> 首页</Link> }, 
           { title: product.category }, 
           { title: '详情' }
         ]} 
@@ -46,14 +57,14 @@ const ProductDetail: React.FC = () => {
               <div>
                 <Text strong>颜色: </Text>
                 <Radio.Group value={c} onChange={e => setC(e.target.value)}>
-                  {product.specs.colors.map(v => <Radio.Button key={v} value={v}>{v}</Radio.Button>)}
+                  {product.specs.colors.map((v: string) => <Radio.Button key={v} value={v}>{v}</Radio.Button>)}
                 </Radio.Group>
               </div>
               
               <div>
                 <Text strong>尺码: </Text>
                 <Radio.Group value={s} onChange={e => setS(e.target.value)}>
-                  {product.specs.sizes.map(v => <Radio.Button key={v} value={v}>{v}</Radio.Button>)}
+                  {product.specs.sizes.map((v: string) => <Radio.Button key={v} value={v}>{v}</Radio.Button>)}
                 </Radio.Group>
               </div>
               

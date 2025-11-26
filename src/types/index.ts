@@ -2,77 +2,135 @@
 
 // 1. DummyJSON 原始单品结构
 export interface DummyJsonProduct {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number; // 真实评分
-  stock: number;
-  brand: string;
-  category: string; // DummyJSON 返回的是字符串，不是对象
-  thumbnail: string;
-  images: string[];
-}
 
-// 2. DummyJSON 响应结构 (包裹在 products 字段中)
+  //基础信息
+  id: number;                    // 商品编号
+  title: string;                 // 商品标题
+  description: string;           // 商品描述
+  category: string;              // 商品类别
+  brand?: string;                // 品牌
+  tags: string[];                // 标签
+  thumbnail: string;             // 列表缩略图
+  images: string[];              // 详情轮播图
+
+
+  //价格库存 Price / Stock
+  price: number;                 // 售价
+  discountPercentage: number;    // 折扣百分比
+  stock: number;                 // 库存
+  sku?: string;                  // SKU
+  minimumOrderQuantity?: number; // 最小起订量
+
+
+  //规格参数 Specifications
+  weight?: number;               // 重量（g）
+  dimensions?: {
+    width: number;               // 宽(mm)
+    height: number;              // 高(mm)
+    depth: number;               // 深(mm)
+  };
+
+
+  //评价 Reviews
+  rating: number;                // 商品评分
+  reviews?: Array<{
+    rating: number;              // 用户评分
+    comment: string;             // 评价内容
+    date: string;                // 日期
+    reviewerName: string;        // 昵称
+    reviewerEmail: string;       // 邮箱
+  }>;
+
+
+  //售后/交易信息 Service
+  returnPolicy?: string;         // 退货政策
+  warrantyInformation?: string;  // 保修说明
+  shippingInformation?: string;  // 物流说明
+  availabilityStatus?: string;   // 商品状态：In Stock / Out of Stock
+
+
+  //元数据 Meta
+  meta?: {
+    createdAt: string;           // 创建时间
+    updatedAt: string;           // 更新时间
+    barcode: string;             // 条码
+    qrCode: string;              // 二维码
+  };
+}
+// 2. DummyJSON 列表响应结构
 export interface DummyJsonResponse {
-  products: DummyJsonProduct[];
-  total: number;
-  skip: number;
-  limit: number;
+  products: DummyJsonProduct[];   // 商品列表
+  total: number;                  // 商品总数
+  skip: number;                   // 跳过数量
+  limit: number;                  // 限制数量
 }
 
 // 3. 应用内部使用的商品结构
+
+// 商品规格，前端模拟
 export interface ProductSpec {
-  colors: string[];
-  sizes: string[];
+  colors: string[];               // 可选颜色
+  sizes: string[];                // 可选尺寸
 }
 
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  sales: number;      // 本地模拟 (API无此字段)
-  rating: number;     // 使用 API 真实数据
-  category: string;
-  image: string;      // 映射 API 的 thumbnail
-  description: string;
-  specs: ProductSpec; // 本地模拟
+// 商品模型
+export interface Product extends DummyJsonProduct {
+    // 适配字段
+  discount?: number;                // 折扣百分比（与discountPercentage相同）
+  image: string;                    // 商品图片（与thumbnail相同）
+    
+    // 前端模拟字段
+  sales: number;                    // 销量，前端模拟  
+  specs: ProductSpec;               // 规格，前端模拟
 }
 
+// 购物车项
 export interface CartItem extends Product {
-  selectedColor: string;
-  selectedSize: string;
-  quantity: number;
+  selectedColor: string;            // 选中的颜色
+  selectedSize: string;             // 选中的尺寸
+  quantity: number;                 // 购买数量
+}
+
+// 状态管理相关接口 
+export interface FilterState {
+  keyword: string;                  // 搜索关键词
+  category: string;                 // 商品类别
+  minPrice: string;                 // 最低价格
+  maxPrice: string;                 // 最高价格
+}
+
+export interface SortState {
+  by: 'default' | 'price' | 'sales' | 'discount' | 'title' | 'rating';  // 排序依据
+  order: 'asc' | 'desc';              // 排序顺序
+}
+
+export interface PaginationState {
+  current: number;                    // 当前页码
+  pageSize: number;                   // 每页条数
+}
+
+export interface ShopState {
+  products: Product[];                // 商品列表
+  categories: string[];               // 商品类别列表
+  cart: CartItem[];                   // 购物车列表     
+  loading: boolean;                   // 加载状态
+  error: string | null;               // 错误信息
+  view: 'list' | 'detail';            // 视图模式
+  currentProduct: Product | null;     // 当前选中的商品
+  filters: FilterState;               // 过滤状态
+  sort: SortState;                    // 排序状态
+  pagination: PaginationState;        // 分页状态
+}
+
+export interface Category {
+  slug: string;
+  name: string;
+  url: string;
 }
 
 export interface FilterState {
   keyword: string;
-  category: string;
-  minPrice: string | number;
-  maxPrice: string | number;
-}
-
-export interface SortState {
-  by: 'default' | 'price' | 'sales';
-  order: 'asc' | 'desc';
-}
-
-export interface PaginationState {
-  current: number;
-  pageSize: number;
-}
-
-export interface ShopState {
-  products: Product[];
-  categories: string[];
-  cart: CartItem[];
-  loading: boolean;
-  error: string | null;
-  view: 'list' | 'detail';
-  currentProduct: Product | null;
-  filters: FilterState;
-  sort: SortState;
-  pagination: PaginationState;
+  category: string; 
+  minPrice: string;
+  maxPrice: string;
 }

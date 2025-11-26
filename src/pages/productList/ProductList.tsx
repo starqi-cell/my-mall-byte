@@ -1,25 +1,29 @@
 // src/pages/ProductList.tsx
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { 
   Layout, Row, Col, Pagination, Empty, Spin, Button, Drawer, Select 
 } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '../store';
-import { setSort, setPage } from '../store/shopSlice';
-import FilterSidebar from '../components/FilterSidebar';
-import ProductCard from '../components/ProductCard';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { setSort, setPage, fetchProducts } from '../store/productsSlice';
+import FilterSidebar from '../../components/FilterSidebar';
+import ProductCard from '../../components/ProdectCard/ProductCard';
 
 const { Option } = Select;
 
 const ProductList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { products, filters, sort, pagination, loading } = useAppSelector(state => state.shop);
+  const { products, filters, sort, pagination, loading } = useAppSelector(state => state.products);
   const [isMobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const category = useAppSelector(state => state.products.filters.category);
 
-  // Memoized Filtering Logic
+  // 组件加载时获取商品数据
+  useEffect(() => {
+    dispatch(fetchProducts(category));
+  }, [dispatch, category]);
+
   const filtered = useMemo(() => {
     let res = [...products];
-    if (filters.category !== '全部') res = res.filter(p => p.category === filters.category);
     if (filters.keyword) res = res.filter(p => p.title.toLowerCase().includes(filters.keyword.toLowerCase()));
     if (filters.minPrice) res = res.filter(p => p.price >= Number(filters.minPrice));
     if (filters.maxPrice) res = res.filter(p => p.price <= Number(filters.maxPrice));
