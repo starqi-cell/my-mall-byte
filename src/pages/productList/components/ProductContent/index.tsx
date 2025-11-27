@@ -52,6 +52,8 @@ const ProductContent: React.FC<ProductContentProps> = ({
         pageSize={pagination.pageSize}
         total={totalFiltered}
         onChange={onPageChange}
+        align='center'
+        showSizeChanger={false}
       />
     </Wrapper>
   );
