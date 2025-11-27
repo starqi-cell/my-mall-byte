@@ -99,7 +99,7 @@ export interface FilterState {
 }
 
 export interface SortState {
-  by: 'default' | 'price' | 'sales' | 'discountPercentage' | 'title' | 'rating';  // 排序依据
+  by: 'default' | 'price' | 'sales' | 'discountPercentage'  | 'rating';  // 排序依据
   order: 'asc' | 'desc';              // 排序顺序
 }
 

@@ -1,49 +1,73 @@
 import styled from 'styled-components';
 
-export const SidebarContainer = styled.div`
+export const Wrapper = styled.div`
+
   display: flex;
   flex-direction: column;
-  gap: 20px; 
   width: 100%;
-  min-height: 500px; /* 设置最小高度，确保布局稳定 */
   height: 100%;
+  min-height: 500px; 
   flex-grow: 1;
-`;
 
-export const Section = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 
-  .ant-radio-group {
+  .ant-card {
+    height: 100%;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    
+    .ant-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+  }
+
+ 
+  .filter-section {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    
-    max-height: 300px; /* 调整最大高度，避免过高 */
-    min-height: 120px; /* 添加最小高度，确保布局稳定 */
-    overflow-y: auto;  
-    padding-right: 4px; 
 
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-    &::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 4px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 4px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-      background: #999;
+
+    .category-scroll-area {
+      .ant-radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        
+        max-height: 300px; 
+        min-height: 120px; 
+        overflow-y: auto;  
+        padding-right: 4px;
+
+        
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 4px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: #ccc;
+          border-radius: 4px;
+        }
+        &::-webkit-scrollbar-thumb:hover {
+          background: #999;
+        }
+      }
+
+      min-height: 120px;
+      display: flex;
+      align-items: center; 
+      justify-content: center;
     }
   }
-`;
 
-export const PriceContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  .price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 `;

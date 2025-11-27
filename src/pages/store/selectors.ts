@@ -102,10 +102,6 @@ export const selectFilteredAndSortedProducts = createSelector(
           const discountPercentageA = a.discountPercentage  || 0;
           const discountPercentageB = b.discountPercentage  || 0;
           return sort.order === 'asc' ? discountPercentageA - discountPercentageB : discountPercentageB - discountPercentageA;
-        case 'title':
-          return sort.order === 'asc'
-            ? a.title.localeCompare(b.title)
-            : b.title.localeCompare(a.title);
         default:
           return 0;
       }
@@ -157,7 +153,7 @@ export const selectCartTotal = createSelector(
     }, 0);
   }
 );
-  
+
 export const selectCartHasItems = createSelector(
   [selectCartItems],
   (cartItems) => cartItems.length > 0

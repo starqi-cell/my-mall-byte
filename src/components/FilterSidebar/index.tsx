@@ -1,9 +1,10 @@
 // src/components/FilterSidebar/index.tsx
-import React, { FC, memo, ReactNode } from 'react';
+import { FC, memo, ReactNode } from 'react';
 import { Card, Typography, Radio, InputNumber, Spin } from 'antd';
+
 import { useAppDispatch, useAppSelector } from '../../store';
 import { setFilter } from '../../pages/store/productsSlice';
-import { SidebarContainer, Section, PriceContainer } from './style';
+import { Wrapper } from './style'; 
 
 interface IProps {
   children?: ReactNode
@@ -12,45 +13,38 @@ interface IProps {
 const { Title, Text } = Typography;
 
 const FilterSidebar: FC<IProps> = memo(() => {
+
   const dispatch = useAppDispatch();
   const { filters } = useAppSelector(state => state.products);
-  const { list: categories } = useAppSelector(state => state.categories);
-
-  function handleCategoryChange(e: any) {
-    dispatch(setFilter({ category: e.target.value }));
-  }
+  const { list: categories } = useAppSelector(state => state.categories); 
 
   return (
-    <Card style={{ height: '100%', minHeight: '500px', display: 'flex', flexDirection: 'column' }}>
-      <SidebarContainer>
-
-        {/* 分类筛选 */}
-        <Section>
+    <Wrapper>
+      <Card>
+        <div className="filter-section">
           <Title level={5}>商品分类</Title>
           
-          <div style={{ minHeight: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {categories.length === 0 ? (
-              <Spin />
-            ) : (
-              <Radio.Group
-                onChange={(e) => dispatch(setFilter({ category: e.target.value }))}
-                value={filters.category === '全部' ? 'all' : filters.category}
-                style={{ width: '100%' }}
-              >
-                {categories.map((cat) => (
-                  <Radio key={cat.slug} value={cat.slug}>
-                    {cat.name}
-                  </Radio>
-                ))}
-              </Radio.Group>
-            )}
+          <div className="category-scroll-area">
+             {categories.length === 0 ? (
+                <Spin /> 
+             ) : (
+                <Radio.Group
+                  onChange={(e) => dispatch(setFilter({ category: e.target.value }))}
+                  value={filters.category === '全部' ? 'all' : filters.category}
+                  style={{ width: '100%' }}
+                  vertical
+                  options={categories.map((cat) => ({
+                    label: cat.name,
+                    value: cat.slug,
+                  })) .concat([])}
+                />
+             )}
           </div>
-        </Section>
+        </div>
 
-        {/* 价格筛选 */}
-        <Section>
+        <div className="filter-section">
           <Title level={5}>价格范围 ($)</Title>
-          <PriceContainer>
+          <div className="price-row">
             <InputNumber
               placeholder="Min"
               value={filters.minPrice ? Number(filters.minPrice) : undefined}
@@ -66,11 +60,11 @@ const FilterSidebar: FC<IProps> = memo(() => {
               style={{ width: 80 }}
               min={0}
             />
-          </PriceContainer>
-        </Section>
-        
-      </SidebarContainer>
-    </Card>
+          </div>
+        </div>
+
+      </Card>  
+    </Wrapper>
   );
 });
 
