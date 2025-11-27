@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  min-height: 500px; 
+  min-height: 400px; 
   flex-grow: 1;
-
+  min-width: 250px;
 
   .ant-card {
     height: 100%;
@@ -35,12 +34,11 @@ export const Wrapper = styled.div`
         display: flex;
         flex-direction: column;
         gap: 8px;
-        
-        max-height: 300px; 
-        min-height: 120px; 
+        max-height: 450px; 
+        min-height: 150px; 
         overflow-y: auto;  
         padding-right: 4px;
-
+        
         
         &::-webkit-scrollbar {
           width: 6px;

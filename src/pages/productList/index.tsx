@@ -33,12 +33,12 @@ const ProductList: React.FC = () => {
       {/*xs = 手机, lg = 平板, xl = 电脑*/}
       <Row gutter={24}>
         {/* 左侧筛选栏 */}
-        <Col xs={0} md={0} lg={6} xl={5}>
+        <Col xs={0} md={0} lg={4} xl={4}>
           <FilterSidebar />
         </Col>
-
+        <Col xs={0} md={0} lg={2} xl={2} />
         {/* 右侧主内容 */}
-        <Col xs={24} md={24} lg={18} xl={19}>
+        <Col xs={24} md={24} lg={18} xl={18}>
           
           <ProductSortBar 
             onOpenMobileFilter={() => setMobileFilterOpen(true)}

@@ -4,7 +4,7 @@ import { Typography } from "antd";
 
 export const StyledCover = styled.div`
   width: 100%;
-  height: 180px;
+  height: 160px;
   overflow: hidden;
   position: relative;
   background: #f5f5f5;
