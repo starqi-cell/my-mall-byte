@@ -16,20 +16,33 @@ const { Title, Text, Paragraph } = Typography;
 const ProductDetail: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const product = useAppSelector((state) => 
-    state.products.products.find((p: Product) => p.id === Number(id))
-  );
+  const { products, loading } = useAppSelector((state) => state.products);
+  const product = products.find((p: Product) => p.id === Number(id));
   
-  if (!product) return <div>产品不存在</div>;
+  // 所有hooks必须在条件返回前定义
+  const [q, setQ] = useState(1);
+  const [c, setC] = useState('');
+  const [s, setS] = useState('');
   
-  // 组件加载时获取商品数据
+  // 组件加载时立即获取商品数据
   useEffect(() => {
     dispatch(fetchProducts('all'));
-  }, [dispatch]);
-
-  const [q, setQ] = useState(1);
-  const [c, setC] = useState(product.specs.colors[0]);
-  const [s, setS] = useState(product.specs.sizes[0]);
+  }, [dispatch, id]);
+  
+  // 在product存在时更新状态
+  useEffect(() => {
+    if (product) {
+      setQ(1);
+      setC(product.specs.colors[0]);
+      setS(product.specs.sizes[0]);
+    }
+  }, [product]);
+  
+  // 显示加载状态
+  if (loading) return <div style={{ textAlign: 'center', padding: '50px' }}>加载中...</div>;
+  
+  // 数据加载完成后再判断产品是否存在
+  if (!product) return <div style={{ textAlign: 'center', padding: '50px' }}>产品不存在</div>;
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px' }}>
