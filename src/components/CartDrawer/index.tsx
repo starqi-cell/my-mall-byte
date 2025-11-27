@@ -5,6 +5,8 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { removeFromCart } from '../../pages/store/cartSlice';
 import { CartItem } from '../../types';
+import { tofixedTwo } from '../../utils/string';
+import { Link } from 'react-router-dom';
 
 import { FooterWrapper, TotalRow, PriceText } from "./style"; 
 
@@ -27,7 +29,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
     }));
   };
 
-  const total = cart.reduce((t, i) => t + i.price * i.quantity, 0);
+  const total = tofixedTwo(cart.reduce((t, i) => t + i.price * i.quantity, 0));
 
   return (
     <Drawer
@@ -68,7 +70,11 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
               ]}
             >
               <List.Item.Meta
-                avatar={<Avatar shape="square" size={60} src={item.image} />}
+                avatar={
+                <Link to={`/product/${item.id}`}>
+                  <Avatar shape="square" size={60} src={item.image} />
+                </Link>
+                }
                 title={item.title}
                 description={
                   <div>
