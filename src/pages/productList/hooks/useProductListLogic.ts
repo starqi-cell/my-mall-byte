@@ -11,41 +11,47 @@ export const useProductListLogic = () => {
   const { category: routeCategory } = useParams<{ category?: string }>();
   const { products, filters, sort, pagination, loading } = useAppSelector(s => s.products);
   
-  // 当路由参数变化时，更新Redux中的筛选条件
   useEffect(() => {
     const categoryToUse = routeCategory || 'all';
+    dispatch(fetchProducts(categoryToUse));
     dispatch(setFilter({ category: categoryToUse }));
   }, [routeCategory, dispatch]);
   
-  // 根据筛选条件获取数据
   useEffect(() => {
-    const category = filters.category === '全部' ? 'all' : filters.category;
-    dispatch(fetchProducts(category));
-  }, [filters.category, dispatch]);
+    const routeCategoryValue = routeCategory || 'all';
+    const filterCategoryValue = filters.category === '全部' ? 'all' : filters.category;
+    if (routeCategoryValue !== filterCategoryValue) {
+      dispatch(fetchProducts(filterCategoryValue));
+    }
+  }, [filters.category, routeCategory, dispatch]);
 
-  // 本地筛选和排序
+
   const filteredProducts = useMemo(() => {
     let res = [...products];
 
-    // 1. 先根据路由参数（已通过setFilter更新到filters）进行分类筛选
+
     const category = filters.category === '全部' ? 'all' : filters.category;
     if (category !== 'all') {
       res = res.filter(p => p.category.toLowerCase() === category.toLowerCase());
     }
 
-    // 2. 搜索和价格过滤
+
     if (filters.keyword) res = res.filter(p => p.title.toLowerCase().includes(filters.keyword.toLowerCase()));
     if (filters.minPrice) res = res.filter(p => p.price >= Number(filters.minPrice));
     if (filters.maxPrice) res = res.filter(p => p.price <= Number(filters.maxPrice));
 
-    // 3. 排序
+
     if (sort.by === 'price') {
       res.sort((a, b) => sort.order === 'asc' ? a.price - b.price : b.price - a.price);
+    }else if (sort.by === 'rating') {
+      res.sort((a, b) => sort.order === 'asc' ? a.rating - b.rating : b.rating - a.rating);
+    } else if (sort.by === 'sales') {
+      res.sort((a, b) => sort.order === 'asc' ? a.sales - b.sales : b.sales - a.sales);
     }
     return res;
   }, [products, filters, sort]);
 
-  // 当前页范围数据
+
   const currentData = useMemo(() => {
     return filteredProducts.slice(
       (pagination.current - 1) * pagination.pageSize, 
@@ -53,13 +59,13 @@ export const useProductListLogic = () => {
     );
   }, [filteredProducts, pagination]);
 
-  // 排序变更处理
+
   const handleSortChange = (value: string) => {
     const [by, order] = value.split('-');
     dispatch(setSort({ by: by as any, order: order as any }));
   };
 
-  // 换页处理
+
   const handlePageChange = (page: number) => {
     dispatch(setPage(page));
   };

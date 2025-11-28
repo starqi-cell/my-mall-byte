@@ -49,10 +49,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <StyledImage
               alt={product.title}
               src={product.image}
-              onError={(e) =>
-                ((e.target as HTMLImageElement).src =
-                  "https://placehold.co/400?text=No+Image")
-              }
             />
             {product.sales > 2000 && (
               <Tag color="red" style={{ position: "absolute", top: 10, left: 10 }}>
@@ -64,7 +60,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       }
     >
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <CategoryText type="secondary">{product.tags.join(' ')}</CategoryText>
+        <CategoryText type="secondary" style={{ textWrap:"nowrap" }}>
+          {product.tags.slice(0, 2).join('\u00A0\u00A0')}
+          {product.tags.length > 2 && ' ...'}
+        </CategoryText>
         
         <TitleText level={5} ellipsis={{ rows: 2 }}>
           {product.title}
@@ -72,7 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <Space>
           <Rate disabled defaultValue={product.rating} style={{ fontSize: 12 }} />
-          <Text type="secondary" style={{ fontSize: 12 }}>
+          <Text type="secondary" style={{ fontSize: 12,textWrap: 'nowrap' }}>
             ({product.sales})
           </Text>
         </Space>

@@ -1,12 +1,13 @@
-// src/pages/ProductList/components/ProductContent.tsx
-// 商品列表内容组件
+// src/pages/productList/components/ProductContent/index.tsx
+// 商品内容组件
 
-import React from 'react';
-import { Row,Col, Empty, Spin, Pagination } from 'antd';
+import React, { FC } from 'react'; 
+import { Row, Col, Empty, Pagination } from 'antd';
 
-import ProductCard from '../../../../components/ProdectCard';
+import ProductCard from '../../../../components/ProductCard';
 import { Wrapper } from './style';
 import { Product } from '../../../../types'; 
+import { SKELETON_PRODUCT } from './config/config';
 
 interface ProductContentProps {
   loading: boolean;
@@ -17,31 +18,34 @@ interface ProductContentProps {
   onPageChange: (page: number) => void;
 }
 
-const ProductContent: React.FC<ProductContentProps> = ({
-  loading,
-  hasRawData,
-  currentData,
-  totalFiltered,
-  pagination,
-  onPageChange
-}) => {
+const ProductContent: FC<ProductContentProps> = (props) => {
+  const { loading, hasRawData, currentData, totalFiltered, pagination, onPageChange } = props;
+
+  let displayData: Product[] = [];
+
   if (loading) {
-    return (
-    <div style={{ padding: 100, textAlign: 'center' }}>
-      <Spin size="large" />
-    </div>
-  );
+    displayData = Array.from({ length: pagination.pageSize || 8 }).map((_, index) => ({
+      ...SKELETON_PRODUCT,
+      id: -1 - index, 
+      title: 'Loading...' 
+    }));
+  } else {
+    displayData = currentData;
   }
 
-  if (!hasRawData) {
-    return <Empty description="暂无商品" />;
-  }
 
+  if (!loading && !hasRawData) {
+      displayData = Array.from({ length: pagination.pageSize || 8 }).map((_, index) => ({
+      ...SKELETON_PRODUCT,
+      id: -1 - index, 
+      title: 'Loading...' 
+    }));
+  }
 
   return (
     <Wrapper>
       <Row gutter={[16, 16]}>
-        {currentData.map(p => (
+        {displayData.map(p => (
           <Col xs={12} md={12} lg={8} xl={6} key={p.id}>
             <ProductCard product={p} />
           </Col>
@@ -52,7 +56,7 @@ const ProductContent: React.FC<ProductContentProps> = ({
         pageSize={pagination.pageSize}
         total={totalFiltered}
         onChange={onPageChange}
-        align='center'
+        style={{ textAlign: 'center', marginTop: 24 }}
         showSizeChanger={false}
       />
     </Wrapper>

@@ -5,7 +5,7 @@ import React from 'react';
 import { Row,Col, Empty, Spin, Pagination } from 'antd';
 
 
-import ProductCard from '../../../components/ProdectCard';
+import ProductCard from '../../../components/ProductCard';
 import { Wrapper } from './style';
 import { Product } from '../../../types'; 
 

@@ -1,5 +1,7 @@
+// src/pages/productList/components/ProductContent/style.ts
+// 商品列表内容组件样式
+
 import styled from 'styled-components';
-import { Row } from 'antd';
 
 
 export const Wrapper = styled.div`

@@ -41,12 +41,12 @@ export const fetchProducts = createAsyncThunk(
 
 
 interface ProductsState {
-  products: Product[];
-  loading: boolean;
-  error: string | null;
+  products: Product[];                                // 商品列表      
+  loading: boolean;                                   // 加载状态  
+  error: string | null;                               // 错误信息 
   filters: FilterState;                               // 当前的过滤条件
-  sort: SortState;
-  pagination: { current: number; pageSize: number };   // 分页信息: 当前页码和每页条数
+  sort: SortState;                                    // 当前的排序条件
+  pagination: { current: number; pageSize: number };  // 分页信息: 当前页码和每页条数
 }
 
 const initialState: ProductsState = {

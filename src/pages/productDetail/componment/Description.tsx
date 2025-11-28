@@ -1,6 +1,9 @@
-import React,{memo,useState} from 'react';
+// src/pages/productDetail/componment/Description.tsx
+// 商品详情页 - 商品描述组件
+
+import {memo,useState} from 'react';
 import type { FC,ReactNode } from 'react';
-import { Col, Row, Image, Space } from 'antd';
+import { Space } from 'antd';
 import { Product } from '../../../types';
 import { TagsContainer } from '../style';
 import { Typography, Tag, Divider, Radio, InputNumber, Button, message } from 'antd';
@@ -17,7 +20,6 @@ interface IProps {
 }
 
 const Description: FC<IProps> = memo((props) => {
-    const [selectedImageId, setSelectedImage] = useState(0);
     const { product } = props;
     const [qunlity, setQunlity] = useState(1);
     const [color, setColor] = useState('');
