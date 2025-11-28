@@ -1,43 +1,73 @@
-// src/pages/ProductList/index.tsx
-// 商品列表页主组件
+// src/pages/productList/index.tsx
+// 商品列表页组件
 
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Row, Col, Drawer } from 'antd';
 
-import FilterSidebar from '../../components/FilterSidebar';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { fetchProducts, setSort, setPage, setFilter } from '../store/productsSlice';
 
-import { useProductListLogic } from './hooks/useProductListLogic';
+import FilterSidebar from '../../components/FilterSidebar';
 import ProductSortBar from './components/ProductSortBar';
 import ProductContent from './components/ProductContent';
-
 import { Wrapper } from './style';
-
 
 const ProductList: React.FC = () => {
 
   const [isMobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+
+  const dispatch = useAppDispatch();
+  const { category: routeCategory } = useParams<{ category?: string }>();
   
+
   const { 
-    loading, 
     products, 
-    filteredProducts, 
-    currentData, 
+    filters, 
     pagination, 
-    handleSortChange, 
-    handlePageChange 
-  } = useProductListLogic();
-  
-  
+    loading 
+  } = useAppSelector(s => s.products);
+
+
+  useEffect(() => {
+    const categoryToUse = routeCategory || 'all';
+    dispatch(setFilter({ category: categoryToUse }));
+
+    dispatch(fetchProducts(categoryToUse));
+  }, [routeCategory, dispatch]);
+
+
+  useEffect(() => {
+    const filterCategoryValue = filters.category === '全部' ? 'all' : filters.category;
+    dispatch(fetchProducts(filterCategoryValue));
+  }, [filters.category, dispatch]);
+
+
+
+  const handleSortChange = (value: string) => {
+    const [by, order] = value.split('-');
+    dispatch(setSort({ by: by as any, order: order as any }));
+  };
+
+  const handlePageChange = (page: number) => {
+    dispatch(setPage(page));
+  };
+
+
   return (
     <Wrapper>
-      {/*xs = 手机, lg = 平板, xl = 电脑*/}
+      {/* 布局: xs = 手机, lg = 平板, xl = 电脑 */}
       <Row gutter={24}>
-        {/* 左侧筛选栏 */}
+
         <Col xs={0} md={0} lg={4} xl={4}>
           <FilterSidebar />
         </Col>
+        
         <Col xs={0} md={0} lg={2} xl={2} />
-        {/* 右侧主内容 */}
+
+
         <Col xs={24} md={24} lg={18} xl={18}>
           
           <ProductSortBar 
@@ -46,10 +76,9 @@ const ProductList: React.FC = () => {
           />
 
           <ProductContent 
-            loading={false}
-            hasRawData={products.length > 0}
-            currentData={currentData}
-            totalFiltered={filteredProducts.length}
+            loading={loading}
+
+            hasRawData={products && products.length > 0} 
             pagination={pagination}
             onPageChange={handlePageChange}
           />

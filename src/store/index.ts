@@ -7,11 +7,13 @@ import productsReducer from '../pages/store/productsSlice';
 import cartReducer from '../pages/store/cartSlice';
 import categoryReducer from '../pages/store/categorySlice';
 
+
 export const store = configureStore({
   reducer: {
     products: productsReducer,
     cart: cartReducer,
     categories: categoryReducer,
+
   },
 });
 
