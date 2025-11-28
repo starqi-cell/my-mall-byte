@@ -1,4 +1,6 @@
 // src/components/ProductCard/style.ts
+// 商品卡片组件样式
+
 import styled from "styled-components";
 import { Typography } from "antd";
 

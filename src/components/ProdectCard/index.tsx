@@ -1,4 +1,6 @@
 // src/components/ProductCard/index.tsx
+// 商品卡片组件
+
 import React from "react";
 import { Card, Typography, Space, Rate, Tag, Button, message } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
@@ -15,7 +17,7 @@ import {
   TitleText
 } from "./style";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 interface ProductCardProps {
   product: Product;
@@ -62,8 +64,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       }
     >
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <CategoryText type="secondary">{product.category}</CategoryText>
-
+        <CategoryText type="secondary">{product.tags.join(' ')}</CategoryText>
+        
         <TitleText level={5} ellipsis={{ rows: 2 }}>
           {product.title}
         </TitleText>

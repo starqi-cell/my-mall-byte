@@ -37,7 +37,6 @@ const Navbar: React.FC<NavbarProps> = memo(({ toggleCart }) => {
         <SearchWrapper>
           <Search
             placeholder="搜全站..."
-            allowClear
             enterButton
             onSearch={(val) => dispatch(setFilter({ keyword: val }))}
             onChange={(e) => dispatch(setFilter({ keyword: e.target.value }))}
