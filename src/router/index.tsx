@@ -4,7 +4,7 @@
 import { createHashRouter } from 'react-router-dom';
 import App from '../App';
 import ProductList from '../pages/productList';
-import ProductDetail from '../pages/productDetail/ProductDetail';
+import ProductDetail from '../pages/productDetail';
 
 export const router = createHashRouter([
   {
@@ -13,6 +13,10 @@ export const router = createHashRouter([
     children: [
       {
         path: '',
+        element: <ProductList />
+      },
+      {
+        path: 'category/:category?',
         element: <ProductList />
       },
       {

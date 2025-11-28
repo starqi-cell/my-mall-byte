@@ -4,7 +4,8 @@
 import { FC, memo, ReactNode } from 'react';
 import { Card, Typography, Radio, InputNumber, Spin } from 'antd';
 
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppSelector, useAppDispatch } from '../../store';
+import { useNavigate } from 'react-router-dom';
 import { setFilter } from '../../pages/store/productsSlice';
 import { Wrapper } from './style'; 
 
@@ -16,9 +17,10 @@ const { Title, Text } = Typography;
 
 const FilterSidebar: FC<IProps> = memo(() => {
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { filters } = useAppSelector(state => state.products);
   const { list: categories } = useAppSelector(state => state.categories); 
+  const filters = useAppSelector(state => state.products.filters);
   let newcategories=categories;
   if(newcategories.length===0){
     newcategories=[{name:'加载中...',slug:'all',url:''}];
@@ -31,15 +33,20 @@ const FilterSidebar: FC<IProps> = memo(() => {
           
           <div className="category-scroll-area">
                 <Radio.Group
-                  onChange={(e) => dispatch(setFilter({ category: e.target.value }))}
-                  value={filters.category === '全部' ? 'all' : filters.category}
+                  onChange={(e) => {
+                    if (e.target.value === 'all') {
+                      navigate('/');
+                    } else {
+                      navigate(`/category/${e.target.value}`);
+                    }
+                  }}
                   style={{ width: '100%' }}
                   size="large"
                   vertical
                   options={newcategories.map((cat) => ({
                     label: cat.name,
                     value: cat.slug,
-                  })) .concat([])}
+                  }))}
                 />
           </div>
         </div>
