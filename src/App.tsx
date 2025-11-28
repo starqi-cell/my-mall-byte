@@ -7,7 +7,7 @@ import Navbar from './components/NavBar';
 import CartDrawer from './components/CartDrawer';
 import { StyledLayout, StyledContent, StyledFooter } from './style';
 import { useAppDispatch } from './store';
-import { fetchProducts } from './pages/store/productsSlice';
+
 import { fetchCategory } from './pages/store/categorySlice';
 
 const App: FC = () => {

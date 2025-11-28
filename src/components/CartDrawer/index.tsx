@@ -1,4 +1,6 @@
 // src/components/CartDrawer/index.tsx
+// 购物车抽屉组件
+
 import React from 'react';
 import { Drawer, Button, List, Typography, Empty, Avatar } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';

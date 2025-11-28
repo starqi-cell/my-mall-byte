@@ -1,3 +1,6 @@
+// src/components/FilterSidebar/style.ts
+// 侧边栏筛选组件样式
+
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`

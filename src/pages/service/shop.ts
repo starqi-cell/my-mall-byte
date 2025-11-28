@@ -17,7 +17,6 @@ export const getProductList = async (categorySlug: string = 'all') => {
       limit:0
     }
    });
-   console.log("获取了一次数据");
   return response;
 };
 
@@ -27,8 +26,3 @@ export function getCategoryList() {
   });
 }
 
-export function getProductByCategory(category: string) {
-  return appRequest.get({
-    url: `/products/category/${category}`,
-  });
-}

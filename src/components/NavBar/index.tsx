@@ -1,4 +1,6 @@
 // src/components/Navbar.tsx
+// 导航栏组件
+
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Badge } from 'antd';
@@ -28,7 +30,7 @@ const Navbar: React.FC<NavbarProps> = memo(({ toggleCart }) => {
         <Link to="/" style={{ textDecoration: 'none' }}>
           <LogoLink>
             <ShoppingOutlined />
-            ByteMall
+            MyMall
           </LogoLink>
         </Link>
 

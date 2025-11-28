@@ -1,4 +1,6 @@
 // src/components/CartDrawer/style.ts
+// 购物车抽屉组件样式
+
 import styled from "styled-components";
 
 export const FooterWrapper = styled.div`

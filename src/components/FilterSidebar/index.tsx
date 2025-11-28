@@ -1,4 +1,6 @@
 // src/components/FilterSidebar/index.tsx
+// 筛选侧边栏组件
+
 import { FC, memo, ReactNode } from 'react';
 import { Card, Typography, Radio, InputNumber, Spin } from 'antd';
 

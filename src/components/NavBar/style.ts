@@ -1,4 +1,6 @@
 // src/components/Navbar/style.ts
+// 导航栏组件样式
+
 import styled from 'styled-components';
 import { Layout, Input, Button } from 'antd';
 
