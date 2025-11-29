@@ -16,7 +16,6 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    // 添加商品到购物车
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const existingItem = state.cart.find(item => 
         item.id === action.payload.id && 
@@ -36,15 +35,6 @@ const cartSlice = createSlice({
           item.selectedSize === action.payload.size)
       );
     },
-    updateCartItemQuantity: (state, action: PayloadAction<{ id: number; color: string; size: string; quantity: number }>) => {
-      const { id, color, size, quantity } = action.payload;
-      const item = state.cart.find(item => 
-        item.id === id && item.selectedColor === color && item.selectedSize === size
-      );
-      if (item) {
-        item.quantity = Math.max(1, quantity); // 确保数量至少为1
-      }
-    },
     clearCart: (state) => {
       state.cart = [];
     }
@@ -54,7 +44,6 @@ const cartSlice = createSlice({
 export const {
   addToCart,
   removeFromCart,
-  updateCartItemQuantity,
   clearCart
 } = cartSlice.actions;
 
