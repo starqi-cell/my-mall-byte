@@ -26,3 +26,9 @@ export function getCategoryList() {
   });
 }
 
+export const searchProducts = async (keyword: string) => {
+  return appRequest.get({
+    url: `https://dummyjson.com/products/search?q=${keyword}`
+  });
+};
+

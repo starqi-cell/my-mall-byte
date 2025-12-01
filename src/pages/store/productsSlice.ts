@@ -3,8 +3,40 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Product, FilterState, SortState } from '../../types';
-import { getProductList,getCategoryList } from '../service/shop';
+import { getProductList, getCategoryList, searchProducts } from '../service/shop';
 import { capitalize } from '../../utils/string';
+
+// 搜索商品
+export const searchProductsAction = createAsyncThunk(
+  'products/searchProducts',
+  async (keyword: string, { rejectWithValue }) => {
+    try {
+      const response = await searchProducts(keyword);
+      const rawProducts = response.products || [];
+
+      // 数据适配器
+      const adaptedProducts: Product[] = rawProducts.map((item: any) => ({
+        ...item,
+        category: capitalize(item.category),
+        image: item.thumbnail,
+        brand: item.brand || 'Generic',
+        sku: item.sku || `SKU-${item.id}`,
+        discountPercentage: item.discountPercentagePercentage,
+
+        // 前端模拟字段
+        sales: Math.floor(Math.random() * 3000) + 50,
+        specs: {
+          colors: ['Black', 'White', 'Blue'],
+          sizes: ['S', 'M', 'L', 'XL']
+        }
+      }));
+
+      return adaptedProducts;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to search products');
+    }
+  }
+);
 
 // 获取所有商品列表
 export const fetchProducts = createAsyncThunk(
@@ -92,6 +124,19 @@ const productsSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ? (action.payload as string) : action.error.message || 'Fetch failed';
+      })
+      .addCase(searchProductsAction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.products = [];
+      })
+      .addCase(searchProductsAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
+      .addCase(searchProductsAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ? (action.payload as string) : action.error.message || 'Search failed';
       });
 
   }

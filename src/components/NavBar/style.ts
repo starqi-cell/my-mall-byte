@@ -43,8 +43,12 @@ export const SearchWrapper = styled.div`
   margin: 0 40px;
   display: flex;
 
+  @media (max-width: 768px) {
+    margin: 0 20px;
+  }
+
   @media (max-width: 576px) {
-    display: none;
+    margin: 0 10px;
   }
 `;
 

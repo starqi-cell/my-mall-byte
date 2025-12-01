@@ -9,7 +9,7 @@ import { ShoppingCartOutlined, ShoppingOutlined } from '@ant-design/icons';
 
 import { useAppSelector, useAppDispatch } from '../../store';
 import { CartItem } from '../../types';
-import { setFilter } from '../../pages/store/productsSlice';
+import { setFilter, searchProductsAction } from '../../pages/store/productsSlice';
 
 import { StyledHeader, HeaderInner, LogoLink, SearchWrapper, CartButton } from './style';
 
@@ -38,8 +38,10 @@ const Navbar: React.FC<NavbarProps> = memo(({ toggleCart }) => {
           <Search
             placeholder="搜全站..."
             enterButton
-            onSearch={(val) => dispatch(setFilter({ keyword: val }))}
-            onChange={(e) => dispatch(setFilter({ keyword: e.target.value }))}
+            onSearch={(val) => {
+              dispatch(setFilter({ keyword: val }));
+              dispatch(searchProductsAction(val));
+            }}
           />
         </SearchWrapper>
 
