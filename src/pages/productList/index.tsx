@@ -77,7 +77,6 @@ const ProductList: React.FC = () => {
 
           <ProductContent 
             loading={loading}
-
             hasRawData={products && products.length > 0} 
             pagination={pagination}
             onPageChange={handlePageChange}

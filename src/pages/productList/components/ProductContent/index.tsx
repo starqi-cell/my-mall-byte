@@ -1,7 +1,7 @@
 // src/pages/productList/components/ProductContent/index.tsx
 // 商品内容组件
 
-import React, { FC, useMemo } from 'react'; 
+import React, { FC, useMemo, useEffect } from 'react'; 
 import { Row, Col, Empty, Pagination } from 'antd';
 
 import ProductCard from '../../../../components/ProductCard';
@@ -63,6 +63,13 @@ const ProductContent: FC<ProductContentProps> = (props) => {
     displayData = filteredProducts.slice((page - 1) * pagination.pageSize, page * pagination.pageSize);
   }
 
+  useEffect(() => {
+    const totalPages = Math.max(1, Math.ceil(filteredProducts.length / (pagination.pageSize || 8)));
+    if (page > totalPages) {
+      onPageChange(1);
+    }
+  }, [filteredProducts.length, pagination.pageSize, page]);
+
 
 
   return (
@@ -77,9 +84,11 @@ const ProductContent: FC<ProductContentProps> = (props) => {
       <Pagination 
         current={pagination.current} 
         pageSize={pagination.pageSize}
+        total={filteredProducts.length}
         onChange={onPageChange}
         style={{ textAlign: 'center', marginTop: 24 }}
         showSizeChanger={false}
+        align='center'
       />
     </Wrapper>
   );
