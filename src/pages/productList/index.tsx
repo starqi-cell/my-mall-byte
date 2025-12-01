@@ -32,17 +32,14 @@ const ProductList: React.FC = () => {
 
 
   useEffect(() => {
+    if (loading) return;
     const categoryToUse = routeCategory || 'all';
-    dispatch(setFilter({ category: categoryToUse }));
-
+    if (filters.category === categoryToUse && products.length > 0) {
+      return;
+    }
     dispatch(fetchProducts(categoryToUse));
-  }, [routeCategory, dispatch]);
-
-
-  useEffect(() => {
-    const filterCategoryValue = filters.category === '全部' ? 'all' : filters.category;
-    dispatch(fetchProducts(filterCategoryValue));
-  }, [filters.category, dispatch]);
+    dispatch(setFilter({ category: categoryToUse }));
+  }, [routeCategory, dispatch, filters.category, products.length, loading]);
 
 
 

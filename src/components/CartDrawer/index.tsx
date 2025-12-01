@@ -2,7 +2,7 @@
 // 购物车抽屉组件
 
 import React from 'react';
-import { Drawer, Button, List, Typography, Empty, Avatar } from 'antd';
+import { Drawer, Button, List, Typography, Empty, Avatar, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { removeFromCart } from '../../pages/store/cartSlice';
@@ -33,6 +33,10 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
 
   const total = tofixedTwo(cart.reduce((t, i) => t + i.price * i.quantity, 0));
 
+  function handleCheckout() {
+    message.success('结算功能尚未实现');
+  }
+
   return (
     <Drawer
       title={`购物车 (${cart.length})`}
@@ -47,7 +51,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
               <PriceText>${total}</PriceText>
             </TotalRow>
 
-            <Button type="primary" block size="large">
+            <Button type="primary" block size="large" onClick={handleCheckout}>
               去结算
             </Button>
           </FooterWrapper>

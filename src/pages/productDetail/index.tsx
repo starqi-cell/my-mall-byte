@@ -21,8 +21,10 @@ const ProductDetail: React.FC = () => {
   const product = products.find((p: Product) => p.id === Number(id));
   
   useEffect(() => {
-    dispatch(fetchProducts('all'));
-  }, [dispatch, id]);
+    if (!product && !loading) {
+      dispatch(fetchProducts('all'));
+    }
+  }, [dispatch, id, product, loading]);
   
   if (loading) 
     return <div style={{ textAlign: 'center', padding: '50px' }}>加载中...</div>;
